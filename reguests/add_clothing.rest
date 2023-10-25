@@ -1,0 +1,6 @@
+POST http://localhost:3001/api/clothes
+Content-Type: application/json
+
+{
+    "name": "Chelsea shirt lukaku"
+}
