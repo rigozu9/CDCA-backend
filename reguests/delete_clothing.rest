@@ -1,1 +1,1 @@
-DELETE http://localhost:3001/api/clothes/653a22374a6bd5b5d74482b4
+DELETE http://localhost:3001/api/clothes/653a65afaaddc901c677db8a

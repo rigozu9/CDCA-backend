@@ -2,5 +2,5 @@ POST http://localhost:3001/api/clothes
 Content-Type: application/json
 
 {
-    "name": "f"
+    "name": "ferndi t shirt"
 }
