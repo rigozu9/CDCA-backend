@@ -1,5 +1,9 @@
 const express = require('express')
 const app = express()
+const cors = require('cors')
+require('dotenv').config()
+
+const Clothing = require('./models/clothing')
 
 const requestLogger = (request, response, next) => {
   console.log('Method:', request.method)
@@ -9,94 +13,71 @@ const requestLogger = (request, response, next) => {
   next()
 }
 
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  } else if (error.name === 'ValidationError') {
+    return response.status(400).json({ error: error.message })
+  }
+
+  next(error)
+}
+
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
 }
 
-const cors = require('cors')
-
 app.use(cors())
-app.use(express.static('build'))
 app.use(express.json())
 app.use(requestLogger)
+app.use(express.static('build'))
 
-let clothes = [
-      {
-        "id": 1,
-        "name": "CDG junya jeans"
-      },
-      {
-        "id": 2,
-        "name": "CDG HOMME longsleeve"
-      },
-      {
-        "id": 3,
-        "name": "DOUBLET hoodie"
-      },
-      {
-        "name": "Chlesa shirt",
-        "id": 4
-      },
-      {
-        "name": "Number Nine tshirt",
-        "id": 5
-      }
-]
-
-app.get('/', (req, res) => {
-    res.send('<h1>Hello World!</h1>')
+app.get('/api/clothes', (request, response) => {
+  Clothing.find({}).then(clothes => {
+    response.json(clothes)
 })
-  
-app.get('/api/clothes', (req, res) => {
-    res.json(clothes)
 })
 
-app.get('/api/clothes/:id', (request, response) => {
-    const id = Number(request.params.id)
-    const clothing = clothes.find(clothing => clothing.id === id)
-    if (clothing) {
+app.post('/api/clothes', (request, response, next) => {
+  const body = request.body
+
+  const clothing = new Clothing({
+    name: body.name,
+  })
+
+  clothing.save()
+    .then(savedClothing => {
+      response.json(savedClothing)
+    })
+    .catch(error => next(error))
+})
+
+app.get('/api/clothes/:id', (request, response, next) => {
+  Clothing.findById(request.params.id)
+    .then(clothing => {
+      if (clothing) {
         response.json(clothing)
       } else {
         response.status(404).end()
       }
-})
-
-app.delete('/api/clothes/:id', (request, response) => {
-  const id = Number(request.params.id)
-  clothes = clothes.filter(clothing => clothing.id !== id)
-
-  response.status(204).end()
-})
-
-const generateId = () => {
-  const maxId = clothes.length > 0
-    ? Math.max(...clothes.map(n => n.id))
-    : 0
-  return maxId + 1
-}
-
-app.post('/api/clothes', (request, response) => {
-  const body = request.body
-
-  if (!body.name) {
-    return response.status(400).json({ 
-      error: 'name missing' 
     })
-  }
+    .catch(error => next(error))
+})
 
-  const clothing = {
-    name: body.name,
-    id: generateId(),
-  }
-
-  clothes = clothes.concat(clothing)
-
-  response.json(clothing)
+app.delete('/api/clothes/:id', (request, response, next) => {
+  Clothing.findByIdAndRemove(request.params.id)
+    .then(result => {
+      response.status(204).end()
+    })
+    .catch(error => next(error))
 })
 
 app.use(unknownEndpoint)
+app.use(errorHandler)
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
