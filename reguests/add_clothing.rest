@@ -1,6 +1,8 @@
 POST http://localhost:3001/api/clothes
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJpZ296dSIsImlkIjoiNjUzYjk1MjZkZGRhZTQ4YWJkN2M1MmJjIiwiaWF0IjoxNjk4NDI3NjM5fQ.ZiRF1d9VumrO-7svz0t0vkMg2HZb_oeaw6SFYKdgWCA
 
 {
-    "name": "ferndi t shirt"
+    "name": "Junya watanabe pants",
+    "userId": "653b9526dddae48abd7c52bc"
 }
