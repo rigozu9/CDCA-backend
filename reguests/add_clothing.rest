@@ -1,8 +1,11 @@
 POST http://localhost:3001/api/clothes
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJpZ296dSIsImlkIjoiNjUzYjk1MjZkZGRhZTQ4YWJkN2M1MmJjIiwiaWF0IjoxNjk4NDI3NjM5fQ.ZiRF1d9VumrO-7svz0t0vkMg2HZb_oeaw6SFYKdgWCA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJpZ296dSIsImlkIjoiNjUzYjk1MjZkZGRhZTQ4YWJkN2M1MmJjIiwiaWF0IjoxNjk4NDg4ODY1fQ.aV2f_-txA8TgMFPvE8Sui7NQU247-sztKPeSsxBwZVM
 
 {
     "name": "Junya watanabe pants",
+    "info": "Nice pants from junya wanabe",
+    "size": "M",
+    "price": "500€",
     "userId": "653b9526dddae48abd7c52bc"
 }

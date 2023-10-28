@@ -5,6 +5,9 @@ const clothingSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  info: "string",
+  size: "string",
+  price: "string",
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User"

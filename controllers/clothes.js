@@ -39,6 +39,9 @@ clothesRouter.post("/", async (request, response) => {
 
   const clothing = new Clothing({
     name: body.name,
+    info: body.info,
+    size: body.size,
+    price: body.price,
     user: user._id
   })
 
